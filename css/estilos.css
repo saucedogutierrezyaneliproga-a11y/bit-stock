@@ -171,11 +171,13 @@ body {
 }
 
 /* seccion derecha del header */
+/* Corrección para que el usuario y el carrito se mantengan en una misma línea */
 .hdr-der {
-    font
     display: flex;
-    align-items: center;
-    gap: 15px;
+    align-items: center;       /* Alinea verticalmente al centro el texto y el carrito */
+    gap: 15px;                 /* Separación uniforme entre elementos */
+    flex-wrap: nowrap;         /* Prohíbe terminantemente que el carrito baje al siguiente renglón */
+    white-space: nowrap;       /* Evita que los textos se rompan en múltiples renglones */
 }
 
 .usr-nom {
@@ -184,7 +186,7 @@ body {
 }
 
 .lnk-sesion {
-    font-family: ;
+    font-family: arial;
     color: white;
     text-decoration: none;
     font-size: 16px;
@@ -351,7 +353,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: nowrap; /* Fuerza a que no haya saltos de línea */
     margin-bottom: 15px;
+    gap: 15px;
 }
 
 .item-info {
@@ -361,29 +365,35 @@ body {
     flex: 1;
 }
 
-.item-info img {
-    height: 70px;
-    width: 70px;
-    object-fit: contain;
+.item-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+    min-width: 0; /* Truco vital: evita que el contenedor rompa el flexbox si el texto es muy largo */
+}
+
+.item-det {
+    min-width: 0; /* Permite que el recorte funcione */
+    width: 100%;
 }
 
 .item-det h4 {
     font-size: 16px;
     margin-bottom: 5px;
-}
-
-.item-det p {
-    color: #00ff88;
-    font-weight: bold;
-    font-size: 14px;
+    white-space: nowrap; /* Evita que el título baje al segundo renglón */
+    overflow: hidden; /* Oculta lo que no cabe */
+    text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al final del texto largo */
 }
 
 /* controles de cantidad (- 1 +) */
+/* Evitamos que los controles interactivos se aplasten */
 .item-ctrls {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 0 30px;
+    margin: 0 15px;
+    flex-shrink: 0; /* Impide que Flexbox encoja esta sección */
 }
 
 .item-ctrls button {
@@ -412,11 +422,13 @@ body {
     cursor: pointer;
     font-size: 13px;
     text-decoration: underline;
-}
+    flex-shrink: 0; /* Impide que el botón eliminar se encoja o baje */
 
+}
 /* columna derecha: tarjeta flotante del resumen de compra */
+
 .car-resumen {
-    flex: 1; /* ocupa menos espacio */
+    flex: 2; /* ocupa menos espacio */
     background-color: #161625;
     border: 1px solid #6a11cb; /* borde morado destacado */
     border-radius: 10px;
@@ -501,4 +513,380 @@ body {
     font-size: 12px;
     margin-top: 5px;
     display: none; /* oculto por defecto hasta que actue javascript */
+}
+
+/* --- estilos para la sección sobre nosotros --- */
+.cnt-nosotros {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.nosotros-hero {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.nosotros-hero h1 {
+    font-size: 36px;
+    color: #6a11cb;
+    margin-bottom: 10px;
+}
+
+.nosotros-hero .subtitulo {
+    color: #8888aa;
+    font-size: 16px;
+}
+
+.nosotros-contenido {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.tarjeta-info {
+    background-color: #161625;
+    border: 1px solid #333355;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.tarjeta-info h2 {
+    color: white;
+    font-size: 22px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #22223b;
+    padding-bottom: 8px;
+}
+
+.tarjeta-info p {
+    color: #d1d1e0;
+    line-height: 1.6;
+    font-size: 15px;
+    text-align: justify;
+}
+
+/* --- Estilos para la Vista de Detalle de Producto --- */
+
+.cnt-detalle {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+}
+
+/* Columna Izquierda: Galería visual */
+.det-visual {
+    display: flex;
+    gap: 15px;
+    flex: 1.2;
+}
+
+.lista-miniaturas {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mini-img {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #333355;
+    border-radius: 4px;
+    background-color: #22223b;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.mini-img.activa {
+    border-color: #6a11cb;
+}
+
+.mini-img img, .imagen-principal img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.imagen-principal {
+    flex: 1;
+    background-color: #22223b;
+    border: 1px solid #333355;
+    border-radius: 8px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Columna Central: Información del Producto */
+.det-info {
+    flex: 1.5;
+    display: flex;
+    flex-direction: column;
+}
+
+.ruta-migas {
+    font-size: 13px;
+    color: #a29bfe;
+    margin-bottom: 10px;
+}
+
+.det-titulo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.det-calificacion {
+    color: #ff9f43;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.det-precios {
+    border-bottom: 1px solid #333355;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.tag-oferta-det {
+    background-color: #6a11cb;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 3px 6px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+.precio-ant-det {
+    color: #8888aa;
+    text-decoration: line-through;
+    font-size: 16px;
+}
+
+.precio-act-det {
+    font-size: 32px;
+    font-weight: bold;
+    color: #ffffff;
+    margin: 5px 0;
+}
+
+.det-moneda {
+    font-size: 14px;
+    color: #b3b3cc;
+}
+
+.descuento-det {
+    color: #00ff88;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.iva-nota {
+    font-size: 12px;
+    color: #8888aa;
+    display: block;
+}
+
+.det-caracteristicas h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.det-caracteristicas ul {
+    padding-left: 20px;
+    color: #d1d1e0;
+}
+
+.det-caracteristicas li {
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Columna Derecha: Tarjeta Flotante de Compra */
+.det-compra {
+    flex: 0.9;
+    background-color: #161625;
+    border: 1px solid #333355;
+    border-radius: 12px;
+    padding: 20px;
+    height: fit-content;
+}
+
+.estado-stock {
+    font-size: 14px;
+    color: #b3b3cc;
+    margin-bottom: 15px;
+}
+
+.selector-cantidad {
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.selector-cantidad select {
+    background-color: #22223b;
+    color: white;
+    border: 1px solid #333355;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-left: 10px;
+    outline: none;
+}
+
+.nota-agregar {
+    text-align: center;
+    font-size: 13px;
+    color: #a29bfe;
+    margin-top: 10px;
+}
+
+.tienda-oficial {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #22223b;
+}
+
+.img-tienda {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+/* --- Alineación horizontal para la etiqueta de rebaja --- */
+
+.contenedor-oferta {
+    display: flex;
+    align-items: center;      /* Centra verticalmente el precio y la etiqueta */
+    gap: 10px;                /* Separación de espacio ideal entre el precio y el texto rojo */
+    margin: 5px 0;
+    white-space: nowrap;      /* Evita que la etiqueta se baje si la pantalla se achica */
+}
+
+.precio-descuento {
+    color: #00ff88;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.etiqueta-rebaja {
+    background-color: #ff3838; /* Color rojo brillante de alerta */
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 4px;        /* Bordes sutilmente redondeados */
+    text-transform: uppercase; /* Fuerza mayúsculas para que resalte más */
+}
+
+/* --- Control y tamaño de las imágenes dentro del carrito --- */
+
+/* Contenedor de la imagen del producto en la fila */
+.item-img-wrap {
+    width: 80px;          /* Ancho fijo para la miniatura del componente */
+    height: 80px;         /* Alto fijo para mantener la simetría */
+    flex-shrink: 0;       /* Evita que Flexbox aplaste la imagen si hay mucho texto */
+    background-color: #1c1c2e; /* Un fondo sutil por si la imagen tiene transparencias */
+    border-radius: 6px;
+    overflow: hidden;     /* Recorta cualquier excedente visual */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* La etiqueta img real dentro del carrito */
+.item-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;  /* Ajusta la foto elegantemente para que no se deforme ni se estire */
+    padding: 5px;         /* Separación interna para que el hardware no toque los bordes */
+}
+
+
+/* --- DISEÑO DE DOS COLUMNAS EN EL CARRITO --- */
+
+.carrito-layout-global {
+    display: flex;
+    align-items: flex-start;  /* Mantiene los bloques arriba alineados */
+    gap: 30px;                /* Espacio de separación entre los productos y la ficha */
+    margin-top: 20px;
+}
+
+/* La columna de productos toma el 70% del ancho disponible */
+.lista-carrito {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* La tarjeta del resumen toma el 30% restante */
+.resumen-compra-tarjeta {
+    flex: 1;
+    background-color: #161625;
+    border: 1px solid #333355;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    position: sticky;        /* Efecto premium: se queda estática en pantalla al hacer scroll */
+    top: 40px;
+}
+
+.resumen-compra-tarjeta h3 {
+    color: white;
+    font-size: 18px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #22223b;
+    padding-bottom: 10px;
+}
+
+.resumen-linea {
+    display: flex;
+    justify-content: space-between;
+    color: #8888aa;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.resumen-linea.total {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.precio-total {
+    color: #00ff88;         /* El precio total en color verde brillante */
+    font-size: 18px;
+}
+
+.btn-pagar {
+    width: 100%;
+    background-color: #6a11cb;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.2s ease;
+}
+
+/* Efecto al pasar el mouse por encima del botón pagar */
+.btn-pagar:hover {
+    background-color: #550cb5;
 }
