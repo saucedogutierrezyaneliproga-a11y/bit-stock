@@ -37,23 +37,7 @@
         </div>
     </div>
 
-    <script>
-        // capturamos el formulario por su ID
-        const frm = document.getElementById('frm-reg');
-        
-        // interceptamos el evento de envio (submit)
-        frm.addEventListener('submit', function(e) {
-            // capturamos el valor de las contraseñas
-            let p1 = document.getElementById('pwd').value;
-            let p2 = document.getElementById('pwd2').value;
-
-            // si no son iguales
-            if (p1 !== p2) {
-                e.preventDefault(); // detenemos el envio del formulario
-                alert("Las contraseñas no coinciden. Intenta de nuevo."); // mostramos error
-            }
-        });
-    </script>
+    
 
 </body>
 </html>
