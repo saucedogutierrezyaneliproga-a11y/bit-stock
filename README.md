@@ -1,0 +1,2 @@
+# bit-stock
+Proyecto escolar
