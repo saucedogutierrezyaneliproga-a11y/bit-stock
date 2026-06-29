@@ -1,66 +1,79 @@
 // js/carrito.js
 
 // Funcion global para mandar productos al carrito desde index.php o cualquier otra pantalla
-function agregarAlCarrito(idProducto, cantidad) {
+// Asegúrate de que tu función de agregar capture el data.msg del error
+function agregarAlCarrito(idProducto, cantidad = 1) {
     let datos = new FormData();
-    datos.append('acc', 'add');
     datos.append('id_prd', idProducto);
-    datos.append('cant', cantidad);
+    datos.append('cantidad', cantidad);
 
-    // mandamos los datos en segundo plano a la API de PHP
-    fetch('inc/api_carrito.php', {
+    fetch('api_carrito.php', {
         method: 'POST',
         body: datos
     })
     .then(res => res.json())
     .then(data => {
-        if(data.status === 'success') {
-            alert("Componente añadido al carrito con éxito.");
-            location.reload(); // recargamos sutilmente para actualizar contadores
+        if (data.status === 'success') {
+            alert(data.msg);
+            location.reload(); // Actualiza para ver el globo del carrito incrementar
         } else {
-            alert(data.msg); // muestra error (ej: si no se ha logueado)
+            // Aquí pintará el mensaje exacto diciendo cuántos te quedan de stock en Neon.tech
+            alert(data.msg); 
         }
     })
     .catch(err => console.error("Error:", err));
 }
 
-// Funcion para cambiar la cantidad directamente desde la pantalla del carrito
-function actualizarCantidad(idProducto, nuevaCantidad) {
-    if(nuevaCantidad < 1) return;
-
+function actualizarCantidad(idProducto, operacion) {
     let datos = new FormData();
-    datos.append('acc', 'update');
     datos.append('id_prd', idProducto);
-    datos.append('cant', nuevaCantidad);
+    datos.append('operacion', operacion);
 
-    fetch('api_carrito.php', {
+    // Mandamos la petición asíncrona al archivo que creamos en la raíz
+    fetch('api_cantidad_carrito.php', {
         method: 'POST',
         body: datos
     })
     .then(res => res.json())
     .then(data => {
-        if(data.status === 'success') {
-            location.reload(); // refresca los datos y recalcula totales en pantalla
+        if (data.status === 'success') {
+            // Recargamos el carrito para que se recalculen los subtotales y totales al instante
+            location.reload();
+        } else {
+            alert("No se pudo actualizar la cantidad: " + data.msg);
         }
+    })
+    .catch(err => {
+        console.error("Error en Fetch:", err);
+        alert("Error de conexión con el servidor.");
     });
 }
 
 // Funcion para eliminar por completo un artículo del listado (Baja)
 function eliminarDelCarrito(idProducto) {
-    if(!confirm("¿Estás seguro de que quieres quitar este componente de tu carrito?")) return;
+    if (confirm("¿Estás seguro de que deseas eliminar este artículo de tu carrito?")) {
+        
+        // Preparamos los datos en formato FormData para PHP
+        let datos = new FormData();
+        datos.append('id_prd', idProducto);
 
-    let datos = new FormData();
-    datos.append('acc', 'del');
-    datos.append('id_prd', idProducto);
-
-    fetch('api_carrito.php', {
-        method: 'POST',
-        body: datos
-    })
-    .then(res => res.json())
-    .then(data => {
-        if(data.status === 'success') {
-            location.reload();
-        }
-    });
+        // Fetch hacia la raíz del proyecto
+        fetch('api_eliminar_carrito.php', {
+            method: 'POST',
+            body: datos
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Si la base de datos lo borró con éxito, recargamos la página para ver los cambios
+                location.reload();
+            } else {
+                alert("Error al eliminar: " + data.msg);
+            }
+        })
+        .catch(err => {
+            console.error("Error en la petición:", err);
+            alert("No se pudo conectar con el servidor.");
+        });
+    }
 }
